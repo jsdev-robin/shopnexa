@@ -146,7 +146,6 @@ export default {
           scrollBehavior: "smooth",
           whiteSpace: "nowrap",
           borderLeftWidth: "1px",
-          borderRightWidth: "1px",
           borderBottomWidth: "1px",
           borderColor: "hsl(var(--border))",
           scrollbarColor:
@@ -157,6 +156,28 @@ export default {
           position: "sticky",
           top: "0",
           background: "hsl(var(--muted))",
+        },
+        ".border-overlay": {
+          position: "relative",
+          border: "none",
+
+          "&::after": {
+            content: '""',
+            position: "absolute",
+            borderRightWidth: "1px",
+            borderBottomWidth: "1px",
+            borderColor: "hsl(var(--primary) / 0.1)",
+            height: "100%",
+            top: "0",
+            left: "0",
+            bottom: "0",
+            right: "0",
+            marginRight: "-0.5px",
+
+            "&:last-child": {
+              borderRightWidth: "0",
+            },
+          },
         },
       });
     }),

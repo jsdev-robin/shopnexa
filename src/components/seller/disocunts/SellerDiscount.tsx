@@ -19,7 +19,6 @@ import {
   Edit,
   Eye,
   FilePenLine,
-  Table2,
   Trash,
   XCircle,
 } from "lucide-react";
@@ -46,7 +45,7 @@ const SellerDiscount = () => {
           <Card>
             <CardHeader className="border-b p-4">
               <div className="flex flex-wrap items-center justify-between gap-4">
-                <CardTitle className="text-xl">Order List</CardTitle>
+                <CardTitle className="text-xl">Discount List</CardTitle>
               </div>
             </CardHeader>
             <CardContent className="p-4">
@@ -57,10 +56,26 @@ const SellerDiscount = () => {
                     <col span={1} className="bg-muted/25" />
                   </colgroup>
                   <TableHeader className="sticky-top">
-                    <TableRow>
+                    <TableRow className="*:border-overlay">
                       <TableHead>
                         <div className="flex items-center gap-x-2">
-                          <Table2 size={16} />
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            width={24}
+                            height={24}
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth={2}
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            className="text-blue-500"
+                          >
+                            <path d="M12 20h9" />
+                            <path d="M14 4l6 6-6 6-6-6z" />
+                            <path d="M16 6l-6 6" />
+                            <path d="M10 12L4 18" />
+                          </svg>
                           Manage
                         </div>
                       </TableHead>

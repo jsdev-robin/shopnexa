@@ -10,11 +10,9 @@ export const metadata: Metadata = {
 
 const SellerDisocuntPage = () => {
   return (
-    <React.Suspense
-      fallback={<h1 className="text-red-600 text-center">Loading....</h1>}
-    >
+    <>
       <SellerDiscount />
-    </React.Suspense>
+    </>
   );
 };
 
