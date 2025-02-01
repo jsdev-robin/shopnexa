@@ -1,6 +1,7 @@
 import type { Config } from "tailwindcss";
 import tailwindcssAnimate from "tailwindcss-animate";
 import tailwindForm from "@tailwindcss/forms";
+import plugin from "tailwindcss/plugin";
 
 export default {
   darkMode: ["class"],
@@ -113,5 +114,47 @@ export default {
       },
     },
   },
-  plugins: [tailwindcssAnimate, tailwindForm],
+  plugins: [
+    tailwindcssAnimate,
+    tailwindForm,
+    plugin(function ({ addComponents }) {
+      addComponents({
+        ".scrollbar": {
+          height: "80vh",
+          scrollBehavior: "smooth",
+          whiteSpace: "nowrap",
+          borderLeftWidth: "1px",
+          borderRightWidth: "1px",
+          "&::-webkit-scrollbar": {
+            width: "12px",
+            height: "12px",
+          },
+          "&::-webkit-scrollbar-track": {
+            background: "hsl(var(--border))",
+          },
+          "&::-webkit-scrollbar-thumb": {
+            background: "hsl(var(--muted-foreground))",
+          },
+          "&::-webkit-scrollbar-corner": {
+            backgroundColor: "hsl(var(--muted) / 0.5)",
+          },
+        },
+        ".poem": {
+          height: "80vh",
+          scrollBehavior: "smooth",
+          whiteSpace: "nowrap",
+          borderLeftWidth: "1px",
+          borderRightWidth: "1px",
+          scrollbarColor:
+            "hsl(var(--muted-foreground) / 0.3) hsl(var(--muted) / 0.8)",
+          // scrollbarWidth: "thin",
+        },
+        ".t-sticky": {
+          position: "sticky",
+          top: "0",
+          background: "hsl(var(--muted))",
+        },
+      });
+    }),
+  ],
 } satisfies Config;

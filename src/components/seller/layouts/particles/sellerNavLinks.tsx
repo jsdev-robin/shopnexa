@@ -1,0 +1,73 @@
+import {
+  ShoppingCart,
+  Package,
+  ClipboardList,
+  Gift,
+  Star,
+  Percent,
+  Store,
+  Search,
+  AlertTriangle,
+} from "lucide-react";
+
+export const menuItems = [
+  {
+    label: "Overview",
+    href: "/seller/dashboard",
+    icon: ShoppingCart,
+  },
+  {
+    label: "Products",
+    icon: Package,
+    submenu: [
+      { label: "Overview", href: "/seller/dashboard/product/list" },
+      { label: "Add Product", href: "/seller/dashboard/product/create" },
+    ],
+  },
+  {
+    label: "Orders",
+    icon: ClipboardList,
+    submenu: [
+      { label: "Overview", href: "/seller/dashboard/order/list" },
+      {
+        label: "Purchase Orders",
+        href: "/seller/dashboard/order/purchase-orders",
+        badge: { content: "New", className: "bg-primary/25 text-primary" },
+      },
+      { label: "Order Details", href: "/" },
+    ],
+  },
+  {
+    label: "Referrals",
+    href: "/seller/Referrals",
+    icon: Gift,
+  },
+  {
+    label: "Reviews",
+    href: "/seller/dashboard/product/reviews",
+    icon: Star,
+  },
+  {
+    label: "Discounts",
+    href: "/seller/dashboard/discounts",
+    icon: Percent,
+  },
+  {
+    label: "Store",
+    icon: Store,
+    submenu: [
+      { label: "Overview", href: "/seller/dashboard/store" },
+      { label: "Payouts", href: "/" },
+    ],
+  },
+  {
+    label: "Search",
+    href: "/",
+    icon: Search,
+  },
+  {
+    label: "Empty States",
+    href: "/seller/States",
+    icon: AlertTriangle,
+  },
+];
