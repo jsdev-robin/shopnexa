@@ -125,6 +125,8 @@ export default {
           whiteSpace: "nowrap",
           borderLeftWidth: "1px",
           borderRightWidth: "1px",
+          borderBottomWidth: "1px",
+          borderColor: "hsl(var(--border))",
           "&::-webkit-scrollbar": {
             width: "12px",
             height: "12px",
@@ -145,11 +147,13 @@ export default {
           whiteSpace: "nowrap",
           borderLeftWidth: "1px",
           borderRightWidth: "1px",
+          borderBottomWidth: "1px",
+          borderColor: "hsl(var(--border))",
           scrollbarColor:
             "hsl(var(--muted-foreground) / 0.3) hsl(var(--muted) / 0.8)",
           // scrollbarWidth: "thin",
         },
-        ".t-sticky": {
+        ".sticky-top": {
           position: "sticky",
           top: "0",
           background: "hsl(var(--muted))",
