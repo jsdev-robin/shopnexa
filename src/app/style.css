@@ -1,0 +1,28 @@
+.ql-toolbar.ql-snow {
+  border: none;
+  border-bottom: 1px solid hsl(var(--border));
+  background-color: hsl(var(--muted));
+  z-index: 10;
+}
+
+.ql-container.ql-snow {
+  border: none;
+  background-color: hsl(var(--background));
+  height: 200px;
+}
+
+.ql-editor::-webkit-scrollbar-track {
+  background: hsl(var(--muted));
+  opacity: 50;
+}
+
+.ql-editor::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted-foreground));
+  border-radius: 9999px;
+}
+
+.ql-editor::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+}
