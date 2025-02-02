@@ -173,6 +173,7 @@ export default {
             bottom: "0",
             right: "0",
             marginRight: "-0.5px",
+            zIndex: "-10",
 
             "&:last-child": {
               borderRightWidth: "0",

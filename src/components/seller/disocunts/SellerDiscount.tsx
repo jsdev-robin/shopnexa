@@ -13,6 +13,8 @@ import {
 import { discountData } from "@/components/data/discount";
 import Checkbox from "@/components/ui/checkbox";
 import {
+  ChevronLeftIcon,
+  ChevronRightIcon,
   ChevronsUpDown,
   CircleCheck,
   Download,
@@ -26,6 +28,11 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import useRowSelection from "@/hooks/useRowSelection";
 import { cn } from "@/lib/utils";
+import Typography from "@/components/ui/typography";
+import {
+  DoubleArrowLeftIcon,
+  DoubleArrowRightIcon,
+} from "@radix-ui/react-icons";
 
 const SellerDiscount = () => {
   const {
@@ -34,6 +41,7 @@ const SellerDiscount = () => {
     isRowSelected,
     isAllSelected,
     handleSelectAllChange,
+    selectedRowsCount,
   } = useRowSelection({
     totalRows: discountData.length,
   });
@@ -50,7 +58,7 @@ const SellerDiscount = () => {
             </CardHeader>
             <CardContent className="p-4">
               <div className="space-y-4">
-                <Table className="poem">
+                <Table className="max-lg:scrollbar lg:poem">
                   <colgroup>
                     <col span={3} />
                     <col span={1} className="bg-muted/25" />
@@ -180,6 +188,29 @@ const SellerDiscount = () => {
                     ))}
                   </TableBody>
                 </Table>
+                <div className="flex items-center justify-between gap-4">
+                  <Typography
+                    variant="subtitle2"
+                    className="text-muted-foreground"
+                  >
+                    {selectedRowsCount} of {discountData.length} row(s){" "}
+                    <span className="hidden sm:inline-block"> selected.</span>
+                  </Typography>
+                  <div className="flex items-center space-x-2">
+                    <Button variant="outline" size="icon" className="h-8 w-8">
+                      <DoubleArrowLeftIcon />
+                    </Button>
+                    <Button variant="outline" size="icon" className=" h-8 w-8">
+                      <ChevronLeftIcon />
+                    </Button>
+                    <Button variant="outline" size="icon" className=" h-8 w-8">
+                      <ChevronRightIcon />
+                    </Button>
+                    <Button variant="outline" size="icon" className=" h-8 w-8">
+                      <DoubleArrowRightIcon />
+                    </Button>
+                  </div>
+                </div>
               </div>
             </CardContent>
           </Card>
