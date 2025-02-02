@@ -132,10 +132,10 @@ export default {
             height: "12px",
           },
           "&::-webkit-scrollbar-track": {
-            background: "hsl(var(--border))",
+            background: "hsl(var(--muted) / 0.8)",
           },
           "&::-webkit-scrollbar-thumb": {
-            background: "hsl(var(--muted-foreground))",
+            background: "hsl(var(--muted-foreground) / 0.3)",
           },
           "&::-webkit-scrollbar-corner": {
             backgroundColor: "hsl(var(--muted) / 0.5)",
@@ -156,6 +156,7 @@ export default {
           position: "sticky",
           top: "0",
           background: "hsl(var(--muted))",
+          zIndex: "10",
         },
         ".border-overlay": {
           position: "relative",
