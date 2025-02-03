@@ -47,7 +47,7 @@ import Image from "next/image";
 
 const discountSchema = z.object({
   name: z.string().min(1, "Name is required"),
-  product: z.string().min(1, "Name is required"),
+  product: z.string().min(1, "Product is required"),
   code: z.string().min(1, "Code is required"),
   amount: z
     .number()

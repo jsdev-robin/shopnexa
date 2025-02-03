@@ -190,12 +190,12 @@ export default {
             top: "0",
             left: "0",
             bottom: "0",
-            right: "0",
-            marginRight: "-0.5px",
+            right: "-0.5px",
             zIndex: "-10",
 
             "&:last-child": {
               borderRightWidth: "0",
+              right: "0",
             },
           },
         },
