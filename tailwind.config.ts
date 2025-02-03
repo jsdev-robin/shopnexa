@@ -141,6 +141,24 @@ export default {
             backgroundColor: "hsl(var(--muted) / 0.5)",
           },
         },
+        ".whisper-scroll": {
+          scrollBehavior: "smooth",
+          overflow: "auto",
+          "&::-webkit-scrollbar": {
+            width: "8px",
+            height: "8px",
+          },
+          "&::-webkit-scrollbar-track": {
+            background: "hsl(var(--muted) / 0.8)",
+          },
+          "&::-webkit-scrollbar-thumb": {
+            background: "hsl(var(--muted-foreground) / 0.3)",
+            borderRadius: "9999px",
+          },
+          "&::-webkit-scrollbar-corner": {
+            backgroundColor: "hsl(var(--muted) / 0.5)",
+          },
+        },
         ".poem": {
           height: "80vh",
           scrollBehavior: "smooth",

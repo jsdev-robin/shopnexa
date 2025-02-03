@@ -13,6 +13,8 @@ import {
 import { discountData } from "@/components/data/discount";
 import Checkbox from "@/components/ui/checkbox";
 import {
+  CalendarRangeIcon,
+  ChevronDown,
   ChevronLeftIcon,
   ChevronRightIcon,
   ChevronsUpDown,
@@ -22,6 +24,7 @@ import {
   Eye,
   FilePenLine,
   Gavel,
+  Square,
   Trash,
   XCircle,
 } from "lucide-react";
@@ -37,6 +40,49 @@ import {
 import useLoadingSimulator from "@/hooks/useLoadingSimulator";
 import SellerDiscountSkeleton from "./particles/SellerDiscountSkeleton";
 import SellerDiscountError from "./particles/SellerDiscountError";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/calendar";
+import { CartesianGrid, Legend, Line, LineChart, XAxis } from "recharts";
+import {
+  ChartConfig,
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/components/ui/chart";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import Link from "next/link";
+import DiscountCreateForm from "./particles/DiscountCreateForm";
+
+const chartData = [
+  { month: "January", desktop: 186, mobile: 80 },
+  { month: "February", desktop: 305, mobile: 200 },
+  { month: "March", desktop: 237, mobile: 120 },
+  { month: "April", desktop: 73, mobile: 190 },
+  { month: "May", desktop: 209, mobile: 130 },
+  { month: "June", desktop: 214, mobile: 140 },
+];
+
+const chartConfig = {
+  desktop: {
+    label: "Desktop",
+    color: "hsl(var(--chart-1))",
+  },
+  mobile: {
+    label: "Mobile",
+    color: "hsl(var(--chart-2))",
+  },
+} satisfies ChartConfig;
 
 const SellerDiscount = () => {
   const isLoading = useLoadingSimulator(1000);
@@ -56,6 +102,99 @@ const SellerDiscount = () => {
     <section>
       <div className="container">
         <div className="space-y-4 lg:space-y-6">
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <Breadcrumb>
+              <BreadcrumbList>
+                <BreadcrumbItem>
+                  <BreadcrumbLink asChild>
+                    <Link href="/seller/dashboard">Dashboard</Link>
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>
+                  <BreadcrumbPage>Discounts</BreadcrumbPage>
+                </BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
+            <DiscountCreateForm />
+          </div>
+          <Card>
+            <CardHeader className="border-b p-4">
+              <div className="flex flex-wrap items-center justify-between gap-4">
+                <Popover>
+                  <PopoverTrigger
+                    asChild
+                    className="data-[state=open]:bg-secondary"
+                  >
+                    <Button variant="outline" size="sm" className="text-xs">
+                      <CalendarRangeIcon />
+                      25 Jul, 2025 - 25 Aug, 2025
+                      <ChevronDown />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <div className="flex gap-4">
+                      <Calendar mode="range" />
+                    </div>
+                  </PopoverContent>
+                </Popover>
+                <div className="flex items-center gap-x-4">
+                  <div className="flex items-center">
+                    <Square className="h-3 w-3 fill-blue-500 stroke-blue-500 mr-1" />
+                    <Typography variant="caption">Desktop</Typography>
+                  </div>
+                  <div className="flex items-center">
+                    <Square className="h-3 w-3 fill-green-500 stroke-green-500 mr-1" />
+                    <Typography variant="caption">Mobile</Typography>
+                  </div>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent className="p-4">
+              <ChartContainer
+                config={chartConfig}
+                className="md:w-full md:h-80"
+              >
+                <LineChart
+                  accessibilityLayer
+                  data={chartData}
+                  margin={{
+                    left: 12,
+                    right: 12,
+                  }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis
+                    dataKey="month"
+                    tickLine={false}
+                    axisLine={false}
+                    tickMargin={8}
+                    tickFormatter={(value) => value.slice(0, 3)}
+                  />
+                  {/* <YAxis /> */}
+                  <ChartTooltip
+                    cursor={false}
+                    content={<ChartTooltipContent />}
+                  />
+                  <Legend />
+                  <Line
+                    dataKey="desktop"
+                    type="monotone"
+                    stroke="var(--color-desktop)"
+                    strokeWidth={2}
+                    dot={false}
+                  />
+                  <Line
+                    dataKey="mobile"
+                    type="monotone"
+                    stroke="var(--color-mobile)"
+                    strokeWidth={2}
+                    dot={false}
+                  />
+                </LineChart>
+              </ChartContainer>
+            </CardContent>
+          </Card>
           <Card>
             <CardHeader className="border-b p-4">
               <div className="flex flex-wrap items-center justify-between gap-4">
@@ -184,7 +323,7 @@ const SellerDiscount = () => {
                     </TableBody>
                   </Table>
                 )}
-                <div className="flex items-center justify-between gap-4">
+                <div className="flex flex-wrap items-center justify-between gap-4">
                   <Typography
                     variant="subtitle2"
                     className="text-muted-foreground"
@@ -192,19 +331,36 @@ const SellerDiscount = () => {
                     {selectedRowsCount} of {discountData.length} row(s){" "}
                     <span className="hidden sm:inline-block"> selected.</span>
                   </Typography>
-                  <div className="flex items-center space-x-2">
-                    <Button variant="outline" size="icon" className="h-8 w-8">
-                      <DoubleArrowLeftIcon />
-                    </Button>
-                    <Button variant="outline" size="icon" className=" h-8 w-8">
-                      <ChevronLeftIcon />
-                    </Button>
-                    <Button variant="outline" size="icon" className=" h-8 w-8">
-                      <ChevronRightIcon />
-                    </Button>
-                    <Button variant="outline" size="icon" className=" h-8 w-8">
-                      <DoubleArrowRightIcon />
-                    </Button>
+                  <div className="flex items-center gap-x-4">
+                    <Typography variant="subtitle2" className="hidden sm:block">
+                      Page 1 of 3
+                    </Typography>
+                    <div className="flex items-center space-x-2">
+                      <Button variant="outline" size="icon" className="h-8 w-8">
+                        <DoubleArrowLeftIcon />
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        className=" h-8 w-8"
+                      >
+                        <ChevronLeftIcon />
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        className=" h-8 w-8"
+                      >
+                        <ChevronRightIcon />
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        className=" h-8 w-8"
+                      >
+                        <DoubleArrowRightIcon />
+                      </Button>
+                    </div>
                   </div>
                 </div>
               </div>
