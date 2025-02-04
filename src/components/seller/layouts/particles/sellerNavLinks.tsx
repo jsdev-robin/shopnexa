@@ -31,7 +31,7 @@ export const menuItems = [
         href: "/seller/dashboard/order/purchase-orders",
         badge: { content: "New", className: "bg-primary/25 text-primary" },
       },
-      { label: "Order Details", href: "/" },
+      { label: "Order Details", href: "/seller/dashboard/order/details" },
     ],
   },
   {

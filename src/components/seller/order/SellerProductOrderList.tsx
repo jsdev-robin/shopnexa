@@ -1,17 +1,7 @@
 "use client";
 
 import React from "react";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
-import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Table,
   TableBody,
@@ -21,31 +11,55 @@ import {
   TableCell,
 } from "@/components/ui/table";
 import Checkbox from "@/components/ui/checkbox";
-import { orderData } from "@/components/data/orderData";
+import {
+  Circle,
+  Clock,
+  Clock1,
+  Download,
+  Edit,
+  Eye,
+  Gavel,
+  Search,
+  Trash,
+  XCircle,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Clock, Eye, Search, Table2, Trash } from "lucide-react";
-import PaymentMethodCell from "./particles/PaymentMethodCell";
-import { Button, buttonVariants } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 import useRowSelection from "@/hooks/useRowSelection";
-import { useMounted } from "@/hooks/use-mounted";
+import { cn } from "@/lib/utils";
+
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import Link from "next/link";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
+import { orderData } from "@/components/data/orderData";
+import { useMounted } from "@/hooks/use-mounted";
+import PaymentMethodCell from "./particles/PaymentMethodCell";
+import TableEmptyState from "@/components/ui/table-empty-state";
 
 const SellerProductOrderList = () => {
   const mounted = useMounted();
   const {
+    // selectedRows,
     toggleRowSelection,
     isRowSelected,
     isAllSelected,
     handleSelectAllChange,
+    // selectedRowsCount,
   } = useRowSelection({
     totalRows: orderData.length,
   });
-
   return (
     <section>
       <div className="container">
-        <div className="grid gap-4 lg:gap-6">
+        <div className="space-y-4 lg:space-y-6">
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem>
@@ -65,11 +79,11 @@ const SellerProductOrderList = () => {
                 <CardTitle className="text-xl">Order List</CardTitle>
               </div>
             </CardHeader>
-            <CardContent className="p-4 pt-2">
-              <Tabs defaultValue="all">
+            <CardContent className="p-4">
+              <Tabs defaultValue="all" className="space-y-4">
                 <div className="flex flex-wrap items-center justify-between gap-4">
                   <TabsList className="flex-wrap h-auto">
-                    {["all", "Fulfilled", "Unfulfilled", "pickup"].map(
+                    {["all", "Archived", "Publish", "Unpublish"].map(
                       (item, index) => (
                         <TabsTrigger
                           key={index}
@@ -91,131 +105,150 @@ const SellerProductOrderList = () => {
                   </div>
                 </div>
                 <TabsContent value="all">
-                  <Table
-                    className="h-[70vh] overflow-scroll scroll-smooth [&::-webkit-scrollbar]:size-3
-    [&::-webkit-scrollbar-track]:bg-border
-    [&::-webkit-scrollbar-thumb]:bg-muted-foreground [&::-webkit-scrollbar-corner]:bg-border/50"
-                  >
-                    <TableHeader className="sticky top-0 bg-muted">
-                      <TableRow className="whitespace-nowrap">
-                        <TableHead>
-                          <div className="flex items-center gap-x-2">
-                            <Table2 className="w-4 h-4" />
-                            Manage
-                          </div>
-                        </TableHead>
-                        <TableHead>
-                          <Checkbox
-                            onChange={handleSelectAllChange}
-                            checked={isAllSelected}
-                          />
-                        </TableHead>
-                        <TableHead>Order</TableHead>
-                        <TableHead>Purchased</TableHead>
-                        <TableHead>Status</TableHead>
-                        <TableHead>Customer</TableHead>
-                        <TableHead>Payment method</TableHead>
-                        <TableHead>Payment status</TableHead>
-                        <TableHead>Quantity</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {orderData.map((item, index) => (
-                        <TableRow
-                          key={index}
-                          className={cn("whitespace-nowrap *:border", {
-                            "bg-muted/50": isRowSelected(index),
-                          })}
-                        >
-                          <TableCell>
+                  <div className="space-y-4">
+                    <Table className="max-lg:scrollbar lg:poem">
+                      <TableHeader className="sticky-top">
+                        <TableRow className="*:border-overlay">
+                          <TableHead>
                             <div className="flex items-center gap-x-2">
-                              <Button
-                                variant="destructive"
-                                size="sm"
-                                className="size-6"
-                              >
-                                <Trash className="w-4 h-4" />
-                              </Button>
-                              <Link
-                                href={`/seller/dashboard/order/details/${
-                                  item.orderId.split("#")[1]
-                                }`}
-                                className={cn(
-                                  buttonVariants({
-                                    variant: "secondary",
-                                    size: "sm",
-                                  }),
-                                  "size-6"
-                                )}
-                              >
-                                <Eye size={16} />
-                              </Link>
+                              <Gavel className="text-primary" />
+                              Manage
                             </div>
-                          </TableCell>
-                          <TableCell>
+                          </TableHead>
+                          <TableHead>
                             <Checkbox
-                              role="checkbox"
-                              checked={isRowSelected(index)}
-                              onChange={() => toggleRowSelection(index)}
+                              onChange={handleSelectAllChange}
+                              checked={isAllSelected}
                             />
-                          </TableCell>
-                          <TableCell>{item.orderId}</TableCell>
-                          <TableCell>{item.item}</TableCell>
-                          <TableCell>
-                            {item.status === "Ready for pickup" ? (
-                              <Badge className="bg-green-500/20 text-green-500 p-1.5 hover:bg-green-500/20 hover:text-green-500">
-                                <Clock className="w-4 h-4 mr-1.5" />
-                                {item.status}
-                              </Badge>
-                            ) : item.status === "Unfulfilled" ? (
-                              <Badge className="bg-red-500/20 text-red-500 p-1.5 hover:bg-red-500/20 hover:text-red-500">
-                                <Clock className="w-4 h-4 mr-1.5" />
-                                {item.status}
-                              </Badge>
-                            ) : (
-                              <Badge
-                                variant="secondary"
-                                className="p-1.5 hover:bg-secondary"
-                              >
-                                <Clock className="w-4 h-4 mr-1.5" />
-                                {item.status}
-                              </Badge>
-                            )}
-                          </TableCell>
-                          <TableCell>{item.customer}</TableCell>
-                          <TableCell>
-                            <div className="flex items-center gap-x-2">
-                              {mounted && (
-                                <PaymentMethodCell paymentMethod="Credit Card" />
-                              )}
-                              {item.paymentMethod}
-                            </div>
-                          </TableCell>
-                          <TableCell>
-                            {item.paymentStatus === "Pending" ? (
-                              <Badge className="bg-yellow-500/20 text-yellow-500 p-1.5 hover:bg-yellow-500/20 hover:text-yellow-500">
-                                <Clock className="w-4 h-4 mr-1.5" />
-                                {item.paymentStatus}
-                              </Badge>
-                            ) : (
-                              <Badge
-                                variant="secondary"
-                                className="p-1.5 hover:bg-secondary"
-                              >
-                                <Clock className="w-4 h-4 mr-1.5" />
-                                {item.paymentStatus}
-                              </Badge>
-                            )}
-                          </TableCell>
-                          <TableCell>{item.quantity}</TableCell>
+                          </TableHead>
+                          <TableHead>Order</TableHead>
+                          <TableHead>Purchased</TableHead>
+                          <TableHead>Status</TableHead>
+                          <TableHead>Customer</TableHead>
+                          <TableHead>Payment method</TableHead>
+                          <TableHead>Payment status</TableHead>
+                          <TableHead>Quantity</TableHead>
                         </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
+                      </TableHeader>
+                      <TableBody>
+                        {orderData.map((item, index) => (
+                          <TableRow
+                            key={index}
+                            className={cn("*:border-r", {
+                              "bg-muted/50": isRowSelected(index),
+                            })}
+                          >
+                            <TableCell>
+                              <div className="flex items-center gap-x-2">
+                                <Button
+                                  variant="destructive"
+                                  size="icon"
+                                  className="size-6"
+                                >
+                                  <Trash size={16} />
+                                </Button>
+                                <Button
+                                  variant="secondary"
+                                  size="icon"
+                                  className="size-6"
+                                >
+                                  <Edit size={16} />
+                                </Button>
+                                <Button
+                                  variant="secondary"
+                                  size="icon"
+                                  className="size-6"
+                                >
+                                  <Eye size={16} />
+                                </Button>
+                                <Button
+                                  variant="secondary"
+                                  size="icon"
+                                  className="size-6"
+                                >
+                                  <Download size={16} />
+                                </Button>
+                              </div>
+                            </TableCell>
+                            <TableCell>
+                              <Checkbox
+                                checked={isRowSelected(index)}
+                                onChange={() => toggleRowSelection(index)}
+                              />
+                            </TableCell>
+                            <TableCell>{item.orderId}</TableCell>
+                            <TableCell>{item.item}</TableCell>
+                            <TableCell>
+                              {item.status === "Ready for pickup" ? (
+                                <Badge
+                                  variant="outline"
+                                  className="bg-green-400/25 text-green-500 py-1 px-1.5"
+                                >
+                                  <Clock className="w-3.5 h-3.5 mr-1" />
+                                  {item.status}
+                                </Badge>
+                              ) : item.status === "Unfulfilled" ? (
+                                <Badge
+                                  variant="secondary"
+                                  className="py-1 px-1.5"
+                                >
+                                  <Clock1 className="w-3.5 h-3.5 mr-1" />
+                                  {item.status}
+                                </Badge>
+                              ) : (
+                                <Badge
+                                  variant="outline"
+                                  className="bg-red-500/25 text-red-500 py-1 px-1.5"
+                                >
+                                  <XCircle className="w-3.5 h-3.5 mr-1" />
+                                  {item.status}
+                                </Badge>
+                              )}
+                            </TableCell>
+                            <TableCell>{item.customer}</TableCell>
+                            <TableCell>
+                              <div className="flex items-center gap-x-2">
+                                {mounted && (
+                                  <PaymentMethodCell paymentMethod="Credit Card" />
+                                )}
+                                {item.paymentMethod}
+                              </div>
+                            </TableCell>
+                            <TableCell>
+                              {item.paymentStatus === "Pending" ? (
+                                <Badge
+                                  variant="outline"
+                                  className="bg-yellow-400/25 text-yellow-500 py-1 px-1.5"
+                                >
+                                  <Circle className="w-2 h-2 fill-foreground stroke-foreground mr-1" />
+                                  {item.paymentStatus}
+                                </Badge>
+                              ) : (
+                                <Badge
+                                  variant="outline"
+                                  className="py-1 px-1.5"
+                                >
+                                  <Circle className="w-2 h-2 fill-foreground stroke-foreground mr-1" />
+                                  {item.paymentStatus}
+                                </Badge>
+                              )}
+                            </TableCell>
+                            <TableCell>{item.quantity}</TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
                 </TabsContent>
-                <TabsContent value="Archived">ddf</TabsContent>
-                <TabsContent value="Publish">dfdfd</TabsContent>
-                <TabsContent value="Unpublish">dfdf</TabsContent>
+                <TabsContent value="Archived">
+                  <TableEmptyState />
+                </TabsContent>
+                <TabsContent value="Publish">
+                  <TableEmptyState />
+                </TabsContent>
+                <TabsContent value="Unpublish">
+                  <TableEmptyState />
+                </TabsContent>
               </Tabs>
             </CardContent>
           </Card>
