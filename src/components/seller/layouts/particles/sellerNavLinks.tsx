@@ -2,12 +2,9 @@ import {
   ShoppingCart,
   Package,
   ClipboardList,
-  Gift,
   Star,
   Percent,
   Store,
-  Search,
-  AlertTriangle,
 } from "lucide-react";
 
 export const menuItems = [
@@ -38,11 +35,6 @@ export const menuItems = [
     ],
   },
   {
-    label: "Referrals",
-    href: "/seller/Referrals",
-    icon: Gift,
-  },
-  {
     label: "Reviews",
     href: "/seller/dashboard/product/reviews",
     icon: Star,
@@ -59,15 +51,5 @@ export const menuItems = [
       { label: "Overview", href: "/seller/dashboard/store" },
       { label: "Payouts", href: "/" },
     ],
-  },
-  {
-    label: "Search",
-    href: "/",
-    icon: Search,
-  },
-  {
-    label: "Empty States",
-    href: "/seller/States",
-    icon: AlertTriangle,
   },
 ];

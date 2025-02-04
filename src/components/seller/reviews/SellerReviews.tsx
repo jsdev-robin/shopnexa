@@ -14,7 +14,18 @@ import Link from "next/link";
 import Heading from "@/components/ui/heading";
 import Typography from "@/components/ui/typography";
 import { Badge } from "@/components/ui/badge";
-import { CornerDownRight, Search, ShieldCheck, Star } from "lucide-react";
+import {
+  Check,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  Clock,
+  CornerDownRight,
+  EllipsisVertical,
+  Gavel,
+  Search,
+  ShieldCheck,
+  Star,
+} from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { Input } from "@/components/ui/input";
 import {
@@ -29,8 +40,34 @@ import { reviewsData } from "@/components/data/reviewsData";
 import Image from "next/image";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
+import Checkbox from "@/components/ui/checkbox";
+import { Button } from "@/components/ui/button";
+import SellerReviewReply from "./particles/SellerReviewReply";
+import {
+  Popover,
+  PopoverContent,
+  PopoverItem,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
+import useRowSelection from "@/hooks/useRowSelection";
+import {
+  DoubleArrowLeftIcon,
+  DoubleArrowRightIcon,
+} from "@radix-ui/react-icons";
 
 const SellerReviews = () => {
+  const {
+    // selectedRows,
+    toggleRowSelection,
+    isRowSelected,
+    isAllSelected,
+    handleSelectAllChange,
+    selectedRowsCount,
+  } = useRowSelection({
+    totalRows: reviewsData.length,
+  });
+
   return (
     <section>
       <div className="container">
@@ -285,18 +322,73 @@ const SellerReviews = () => {
                 <Table className="max-lg:scrollbar lg:poem">
                   <TableHeader className="sticky-top">
                     <TableRow>
+                      <TableHead>
+                        <div className="flex items-center gap-x-2">
+                          <Gavel className="text-primary" />
+                          Manage
+                        </div>
+                      </TableHead>
+                      <TableHead>
+                        <Checkbox
+                          onChange={handleSelectAllChange}
+                          checked={isAllSelected}
+                        />
+                      </TableHead>
                       <TableHead>Product</TableHead>
                       <TableHead>Reviewer</TableHead>
-                      <TableHead>Review</TableHead>
+                      <TableHead className="whitespace-normal w-auto lg:w-80">
+                        Review
+                      </TableHead>
                       <TableHead>Date</TableHead>
                       <TableHead>Status</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {reviewsData.map((item, index) => (
-                      <TableRow key={index}>
+                      <TableRow
+                        key={index}
+                        className={cn("*:align-top", {
+                          "bg-muted/50": isRowSelected(index),
+                        })}
+                      >
                         <TableCell>
                           <div className="flex items-center gap-x-2">
+                            <SellerReviewReply />
+                            <Popover>
+                              <PopoverTrigger
+                                asChild
+                                className="data-[state=open]:bg-secondary/80"
+                              >
+                                <Button
+                                  variant="outline"
+                                  size="icon"
+                                  className="size-8"
+                                >
+                                  <EllipsisVertical size={16} />
+                                </Button>
+                              </PopoverTrigger>
+                              <PopoverContent
+                                className="w-24 p-1"
+                                align="start"
+                              >
+                                <PopoverItem>Publish</PopoverItem>
+                                <PopoverItem>Unpublish</PopoverItem>
+                                <Separator className="my-0.5" />
+                                <PopoverItem className="bg-red-500/25 text-red-500 hover:bg-red-500 hover:text-foreground">
+                                  Delete
+                                </PopoverItem>
+                              </PopoverContent>
+                            </Popover>
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <Checkbox
+                            checked={isRowSelected(index)}
+                            onChange={() => toggleRowSelection(index)}
+                          />
+                        </TableCell>
+                        <TableCell>
+                          <div className="flex items-center gap-x-2 mr-10">
                             <Image
                               src={item.img.src}
                               alt={item.img.alt}
@@ -342,74 +434,127 @@ const SellerReviews = () => {
                             </div>
                           </div>
                         </TableCell>
-                        <TableCell className="whitespace-normal w-96">
-                          <div className="space-y-2">
-                            <div className="flex items-center gap-1">
-                              {item.reviewImage?.map(
-                                (reviewImg, revewImgIndex) => (
-                                  <Image
-                                    key={revewImgIndex}
-                                    src={reviewImg}
-                                    alt={reviewImg}
-                                    width={40}
-                                    height={40}
-                                    className="w-10 h-10 rounded-md object-cover"
-                                    priority
-                                  />
-                                )
-                              )}
-                            </div>
-                            <div className="flex items-center gap-1">
-                              <Star className="w-3.5 h-3.5 text-foreground fill-foreground" />
-                              <Star className="w-3.5 h-3.5 text-foreground fill-foreground" />
-                              <Star className="w-3.5 h-3.5 text-foreground fill-foreground" />
-                              <Star className="w-3.5 h-3.5 text-foreground fill-foreground" />
-                              <Star className="w-3.5 h-3.5 text-foreground fill-foreground" />
-                            </div>
-                            <Typography
-                              variant="body2"
-                              className="font-semibold"
-                            >
-                              Good product
-                            </Typography>
-                            <Typography
-                              variant="body2"
-                              className="text-muted-foreground"
-                            >
-                              {item.review}
-                            </Typography>
-                            {item.reply && (
-                              <div>
-                                <div className="flex items-center gap-x-2">
+                        <TableCell className="whitespace-normal w-auto lg:w-80">
+                          <div className="flex items-center gap-1 mb-1">
+                            {item.reviewImage?.map(
+                              (reviewImg, revewImgIndex) => (
+                                <Image
+                                  key={revewImgIndex}
+                                  src={reviewImg}
+                                  alt={reviewImg}
+                                  width={40}
+                                  height={40}
+                                  className="w-10 h-10 rounded-md object-cover"
+                                  priority
+                                />
+                              )
+                            )}
+                          </div>
+                          <div className="flex items-center gap-x-0.5 mb-0.5">
+                            <Star className="w-3.5 h-3.5 text-foreground fill-foreground" />
+                            <Star className="w-3.5 h-3.5 text-foreground fill-foreground" />
+                            <Star className="w-3.5 h-3.5 text-foreground fill-foreground" />
+                            <Star className="w-3.5 h-3.5 text-foreground fill-foreground" />
+                            <Star className="w-3.5 h-3.5 text-foreground fill-foreground" />
+                          </div>
+                          <Typography variant="body2" className="font-semibold">
+                            Good product
+                          </Typography>
+                          <Typography
+                            variant="body2"
+                            className="text-muted-foreground"
+                          >
+                            {item.review}
+                          </Typography>
+                          {item.reply && (
+                            <div className="mt-3">
+                              <div className="flex gap-x-2">
+                                <span>
                                   <CornerDownRight className="w-4 h-4" />
+                                </span>
+                                <div className="grow">
                                   <Typography
                                     variant="body2"
                                     className="font-semibold"
                                   >
                                     You replied with
                                   </Typography>
-                                </div>
-                                <div className="flex items-center gap-x-4">
-                                  <Separator
-                                    orientation="vertical"
-                                    className="w-2 h-full block"
-                                  />
                                   <Typography
+                                    as="blockquote"
                                     variant="body2"
-                                    className="text-muted-foreground"
+                                    className="text-muted-foreground border-l-2 pl-4"
                                   >
                                     {item.reply}
                                   </Typography>
                                 </div>
                               </div>
-                            )}
-                          </div>
+                            </div>
+                          )}
                         </TableCell>
                         <TableCell>{item.date}</TableCell>
+                        <TableCell>
+                          {item.status === "Published" ? (
+                            <Badge
+                              variant="outline"
+                              className="bg-green-400/25 text-green-500 py-1 px-1.5"
+                            >
+                              <Check className="w-3.5 h-3.5 mr-1" />
+                              {item.status}
+                            </Badge>
+                          ) : (
+                            <Badge
+                              variant="outline"
+                              className="bg-yellow-500/25 text-yellow-500 py-1 px-1.5"
+                            >
+                              <Clock className="w-3.5 h-3.5 mr-1" />
+                              {item.status}
+                            </Badge>
+                          )}
+                        </TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
                 </Table>
+                <div className="flex flex-wrap items-center justify-between gap-4">
+                  <Typography
+                    variant="subtitle2"
+                    className="text-muted-foreground"
+                  >
+                    {selectedRowsCount} of {reviewsData.length} row(s){" "}
+                    <span className="hidden sm:inline-block"> selected.</span>
+                  </Typography>
+                  <div className="flex items-center gap-x-4">
+                    <Typography variant="subtitle2" className="hidden sm:block">
+                      Page 1 of 3
+                    </Typography>
+                    <div className="flex items-center space-x-2">
+                      <Button variant="outline" size="icon" className="h-8 w-8">
+                        <DoubleArrowLeftIcon />
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        className=" h-8 w-8"
+                      >
+                        <ChevronLeftIcon />
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        className=" h-8 w-8"
+                      >
+                        <ChevronRightIcon />
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        className=" h-8 w-8"
+                      >
+                        <DoubleArrowRightIcon />
+                      </Button>
+                    </div>
+                  </div>
+                </div>
               </div>
             </CardContent>
           </Card>

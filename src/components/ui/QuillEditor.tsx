@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import dynamic from "next/dynamic";
+import { cn } from "@/lib/utils";
 const QuillEditorDynamic = dynamic(() => import("react-quill-new"), {
   ssr: false,
 });
@@ -9,6 +10,7 @@ const QuillEditorDynamic = dynamic(() => import("react-quill-new"), {
 interface EditorProps {
   onChange?: (value: string) => void;
   value?: string;
+  className?: string;
 }
 
 interface EditorStaticProps {
@@ -19,6 +21,7 @@ interface EditorStaticProps {
 const QuillEditor: React.FC<EditorProps> & EditorStaticProps = ({
   onChange,
   value,
+  className,
   ...rest
 }) => {
   const [editorHtml, setEditorHtml] = useState<string>(value || "");
@@ -38,6 +41,7 @@ const QuillEditor: React.FC<EditorProps> & EditorStaticProps = ({
         value={editorHtml}
         onChange={handleChange}
         {...rest}
+        className={cn(className)}
       />
     </div>
   );
