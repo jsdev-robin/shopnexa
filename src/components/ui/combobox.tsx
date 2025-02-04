@@ -18,6 +18,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import Image from "next/image";
 
 interface Options {
   label: string;
@@ -57,9 +58,24 @@ const Combobox: React.FC<ComboboxProps> = ({
             !value && "text-muted-foreground"
           )}
         >
-          {value
-            ? options.find((option: Options) => option.value === value)?.label
-            : placeholder}
+          {value ? (
+            <div className="flex items-center">
+              {options.find((option) => option.value === value)?.img && (
+                <Image
+                  src={
+                    options.find((option) => option.value === value)?.img ?? ""
+                  }
+                  alt=""
+                  width={16}
+                  height={16}
+                  className="w-4 h-4 rounded-full mr-2"
+                />
+              )}
+              {options.find((option) => option.value === value)?.label}
+            </div>
+          ) : (
+            placeholder
+          )}
           <ChevronsUpDown className="opacity-50" />
         </Button>
       </PopoverTrigger>
@@ -75,11 +91,7 @@ const Combobox: React.FC<ComboboxProps> = ({
               className="focus-within:ring-0 focus-within:border-none h-9"
             />
           )}
-          <CommandList
-            className="[&::-webkit-scrollbar]:size-2
-[&::-webkit-scrollbar-track]:bg-border
-[&::-webkit-scrollbar-thumb]:bg-muted-foreground [&::-webkit-scrollbar-corner]:bg-border/50 [&::-webkit-scrollbar-thumb]:rounded-full"
-          >
+          <CommandList className="whisper-scroll">
             <CommandEmpty>No option found.</CommandEmpty>
             <CommandGroup>
               {options.map((option: Options) => (
@@ -94,6 +106,16 @@ const Combobox: React.FC<ComboboxProps> = ({
                     setOpen(false);
                   }}
                 >
+                  {option.img && (
+                    <Image
+                      src={option.img}
+                      alt=""
+                      width={20}
+                      height={20}
+                      className="w-5 h-5 rounded-md object-cover"
+                      priority
+                    />
+                  )}
                   {option.label}
                   <Check
                     className={cn(

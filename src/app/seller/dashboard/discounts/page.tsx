@@ -1,6 +1,7 @@
 import React from "react";
 import SellerDiscount from "@/components/seller/disocunts/SellerDiscount";
 import { Metadata } from "next";
+import PacmanLoader from "@/components/common/PacmanLoader";
 
 export const metadata: Metadata = {
   title: "Seller Discounts - Mun Bangladesh",
@@ -11,7 +12,9 @@ export const metadata: Metadata = {
 const SellerDisocuntPage = () => {
   return (
     <>
-      <SellerDiscount />
+      <React.Suspense fallback={<PacmanLoader />}>
+        <SellerDiscount />
+      </React.Suspense>
     </>
   );
 };
