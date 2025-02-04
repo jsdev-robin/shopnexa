@@ -170,6 +170,11 @@ export default {
             "hsl(var(--muted-foreground) / 0.3) hsl(var(--muted) / 0.8)",
           // scrollbarWidth: "thin",
         },
+        ".whisper-poem": {
+          scrollBehavior: "smooth",
+          scrollbarColor:
+            "hsl(var(--muted-foreground) / 0.3) hsl(var(--muted) / 0.8)",
+        },
         ".sticky-top": {
           position: "sticky",
           top: "0",
